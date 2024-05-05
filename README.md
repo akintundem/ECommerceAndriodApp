@@ -18,8 +18,7 @@ Our vision is to create a user-friendly e-commerce platform that provides custom
 2. User should receive a confirmation code via email for account verification during sign-up.
 3. User should be able to sign in with their registered email address and password.
 4. User authentication should be secure and protect user credentials from unauthorized access.
-5. Admin should be able to define different user roles such as customer and administrator.
-6. Certain features like order management and product reviews should be accessible only to authenticated users.
+
 
 ### Development Tasks
 
@@ -38,17 +37,37 @@ Our vision is to create a user-friendly e-commerce platform that provides custom
     - Implement logic to handle user sign-up using Amazon Cognito SDK.
     - Implement logic to handle user sign-in using Amazon Cognito SDK.
 
-5. **Email Verification**:
-    - Implement logic to handle email verification during the sign-up process.
-    - Verify user's email address using the confirmation code sent by Amazon Cognito.
+## Feature: Product Listing
 
-6. **Secure Token Storage**:
-    - Implement a secure method for storing authentication tokens (ID token, access token, refresh token) locally on the device.
+### User Stories
 
-7. **Role-Based Access Control**:
-    - Implement logic to assign different roles to users (e.g., customer, moderator, administrator).
-    - Implement role-based access control to restrict access to certain features based on user roles.
+1. As a customer, I want to browse through a variety of products so that I can find what I need easily.
+2. As a customer, I want to search for specific products using keywords to quickly locate them.
+3. As a customer, I want to filter products based on different criteria such as price range, category, and brand to refine my search.
+4. As a customer, I want to view detailed information about each product including images, descriptions, prices, and reviews.
 
-8. **UI/UX Enhancements**:
-    - Improve the user interface and experience for the sign-up and sign-in screens.
-    - Implement error handling and feedback mechanisms to provide users with clear feedback during authentication processes.
+### Acceptance Criteria
+
+1. The app should display a visually appealing and intuitive product listing interface.
+2. Users should be able to search for products using a search bar and see relevant results.
+3. Filtering options should be available and easy to use, providing users with flexibility in their product searches.
+4. Product details page should include clear and concise information along with high-quality images.
+5. Users should be able to add products to their cart with a single tap.
+
+### Development Tasks
+
+1. **Design Product Listing UI**:
+   - Create mockups for the product listing interface considering usability and visual appeal.
+   - Implement the UI design using appropriate Android UI components.
+
+2. **Implement Product Search Functionality**:
+   - Integrate search functionality into the app allowing users to search for products by keywords.
+   - Implement logic to retrieve and display search results from the product database.
+
+3. **Implement Filtering Options**:
+   - Design and implement filtering options for users to refine their product searches.
+   - Implement logic to filter products based on selected criteria.
+
+4. **Create Product Details Page**:
+   - Design and implement a detailed product view page displaying all relevant information about a selected product.
+   - Include features for users to view product images, descriptions, prices, and reviews.
