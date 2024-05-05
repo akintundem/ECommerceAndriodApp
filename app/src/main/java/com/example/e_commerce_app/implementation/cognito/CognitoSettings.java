@@ -21,6 +21,7 @@ public class CognitoSettings {
     private CognitoSettings(Context applicationContext) {
         this.applicationContext = applicationContext;
         loadCredentialsFromJson();
+
     }
 
     public static synchronized void init(Context applicationContext) {

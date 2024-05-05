@@ -4,11 +4,14 @@ import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUser;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.SignUpHandler;
 import com.amazonaws.services.cognitoidentityprovider.model.SignUpResult;
 import com.example.e_commerce_app.R;
+import com.example.e_commerce_app.implementation.UserSessionManager;
 import com.example.e_commerce_app.implementation.cognito.authentication.SignupImplementation;
+import com.example.e_commerce_app.implementation.serverComms.ServerCommunication;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -55,20 +58,26 @@ public class SignupActivity extends AppCompatActivity {
         String email = editTextEmail.getText().toString().trim();
         String password = editTextPassword.getText().toString().trim();
         String phone = editTextPhone.getText().toString().trim();
+        UserSessionManager.getInstance().setUserDetails(email,firstName,lastName,phone);
         SignupImplementation.signUp(firstName,lastName,email,password,phone,signUpHandler);
+
     }
+
+
 
     private final SignUpHandler signUpHandler = new SignUpHandler() {
         @Override
         public void onSuccess(CognitoUser user, SignUpResult signUpResult) {
             // Move to the dashboard activity on successful sign-up
-            Intent intent = new Intent(SignupActivity.this, DashboardActivity.class);
+            Intent intent = new Intent(SignupActivity.this, VerificationCodeActivity.class);
             startActivity(intent);
         }
 
         @Override
         public void onFailure(Exception exception) {
             // Show a toast message on sign-up failure
+            Log.e("SignUpFailure", "Sign-up failed: " + exception.getMessage());
+
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {

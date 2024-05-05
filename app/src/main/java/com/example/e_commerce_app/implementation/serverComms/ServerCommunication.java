@@ -3,119 +3,142 @@ package com.example.e_commerce_app.implementation.serverComms;
 import android.content.Context;
 import android.util.Log;
 
-import org.java_websocket.client.WebSocketClient;
-import org.java_websocket.handshake.ServerHandshake;
+import com.example.e_commerce_app.implementation.cognito.authorization.UserTokenManager;
+
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Random;
+
+import org.java_websocket.client.WebSocketClient;
+import org.java_websocket.handshake.ServerHandshake;
 
 public class ServerCommunication {
-    private static final String TAG = "ServerCommunication";
-    private static final String SERVER_URL = "your_server_url_here";
 
-    public static void requestSong(Context context, String token, String songName, String artistName) throws JSONException {
-        // Create a JSON message with song name and artist name
+    private static ServerCommunication instance;
+    private WebSocketClient client;
+    private WebSocketResponseListener responseListener;
+
+    public interface WebSocketResponseListener {
+        void onResponseReceived(String response);
+    }
+
+    private ServerCommunication(Context context) {
+        initializeWebSocket(context);
+    }
+
+    public static synchronized ServerCommunication getInstance(Context context) {
+        if (instance == null) {
+            instance = new ServerCommunication(context);
+        }
+        return instance;
+    }
+
+    public void setResponseListener(WebSocketResponseListener listener) {
+        this.responseListener = listener;
+    }
+
+    private void initializeWebSocket(Context context) {
+        try {
+            // Define your WebSocket server URL
+            String serverUrl = "ws://10.0.2.2:8888/websocket";
+
+            // Create a WebSocket client
+            client = new WebSocketClient(new URI(serverUrl)) {
+                @Override
+                public void onOpen(ServerHandshake handshakedata) {
+                    // WebSocket connection opened
+                    Log.d("WebSocket", "Connection opened"); // Log message when connection is opened
+
+                }
+
+                @Override
+                public void onMessage(String message) {
+                    // Received a message from the server
+                    // You can handle incoming messages here
+                    if (responseListener != null) {
+                        responseListener.onResponseReceived(message);
+                    }
+                }
+
+                @Override
+                public void onClose(int code, String reason, boolean remote) {
+                    // WebSocket connection closed
+                    // You can handle the connection close event here
+                }
+
+                @Override
+                public void onError(Exception ex) {
+                    // Handle any errors
+                    Log.e("WebSocket", "Error creating WebSocket connection: " + ex.getMessage(), ex); // Log error message
+                }
+            };
+
+            // Connect to the WebSocket server
+            client.connect();
+
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void sendRequest(JSONObject token, String action, JSONObject message) {
+        try {
+            // Construct the JSON object
+            JSONObject requestObject = new JSONObject();
+            requestObject.put("token", token);
+            requestObject.put("action", action);
+            requestObject.put("message", message);
+
+            // Convert JSON object to string
+            String jsonString = requestObject.toString();
+
+            // Check if the WebSocket client is initialized
+            if (client != null && client.isOpen()) {
+                // Send the JSON message
+                client.send(jsonString);
+            }
+
+        } catch (Exception e) {
+            // Log the error with a custom message
+            Log.e("YourTag", "Error sending request: " + e.getMessage(), e);
+        }
+    }
+
+
+
+
+
+    public String requestSong(String songName, String artistName) throws JSONException {
+        // Generate a unique request ID
+        String requestId = generateRequestId();
+
+        // Create a JSON message with song name, artist name, and request ID
         JSONObject messageObject = new JSONObject();
         messageObject.put("song_name", songName);
         messageObject.put("artist_name", artistName);
+        messageObject.put("request_id", requestId);
+
         try {
-            sendRequest(context, token, "request_song", messageObject);
+            sendRequest(UserTokenManager.getInstance().getTokens(), "request_song", messageObject);
         } catch (Exception e) {
-            refreshAccessToken(context, new TokenRefreshListener() {
-                @Override
-                public void onTokenRefreshed(String refreshedToken) {
-                    // Retry request with refreshed token
-                    sendRequest(context, token, "request_song", messageObject);
-                }
-
-                @Override
-                public void onTokenRefreshFailed() {
-                    // Handle token refresh failure
-                    Log.e(TAG, "Token refresh failed");
-                }
-            });
-        }
-    }
-
-    private static void sendRequest(Context context, String token, String action, JSONObject message) {
-        RequestQueue requestQueue = Volley.newRequestQueue(context);
-
-        // Create JSON object for the message
-        JSONObject messageObject = new JSONObject();
-        try {
-            messageObject.put("song_name", songName);
-            messageObject.put("artist_name", artistName);
-        } catch (JSONException e) {
-            e.printStackTrace();
+            // Refresh access token
+            UserTokenManager.getInstance().refreshTokens();
+            // Resend request with refreshed tokens
+            sendRequest(UserTokenManager.getInstance().getTokens(), "request_song", messageObject);
         }
 
-        // Create JSON object request
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
-                Request.Method.POST,
-                SERVER_URL,
-                messageObject,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        // Handle server response
-                        Log.d(TAG, "Server response: " + response.toString());
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        // Handle error
-                        Log.e(TAG, "Error sending message to server: " + error.toString());
-                        handleErrorResponse(context, error, new TokenRefreshListener() {
-                            @Override
-                            public void onTokenRefreshed(String refreshedToken) {
-                                // Retry request with refreshed token
-                                sendRequest(context, refreshedToken, songName, artistName);
-                            }
-
-                            @Override
-                            public void onTokenRefreshFailed() {
-                                // Handle token refresh failure
-                                Log.e(TAG, "Token refresh failed");
-                            }
-                        });
-                    }
-                }
-        ) {
-            @Override
-            public Map<String, String> getHeaders() {
-                // Return custom headers (e.g., user token)
-                Map<String, String> headers = new HashMap<>();
-                headers.put("Content-Type", "application/json");
-                headers.put("Authorization", "Bearer " + token); // Add user token to headers
-                return headers;
-            }
-        };
-
-        // Add request to the request queue
-        requestQueue.add(jsonObjectRequest);
+        // Return the generated request ID
+        return requestId;
     }
 
-    private static void refreshAccessToken(Context context, TokenRefreshListener listener) {
-        // Implement token refresh logic here
-        // Example: TokenManager.refreshAccessToken(context, listener);
+
+    private String generateRequestId() {
+        // Generate a unique ID based on current time in milliseconds and a random number
+        long timestamp = System.currentTimeMillis();
+        int randomNumber = new Random().nextInt(1000); // Change 1000 to desired range
+        return String.valueOf(timestamp) + randomNumber;
     }
 
-    private static void handleErrorResponse(Context context, VolleyError error, TokenRefreshListener listener) {
-        // Check if the error is due to an invalid or expired access token
-        if (error instanceof AuthFailureError && error.networkResponse != null && error.networkResponse.statusCode == HttpStatus.SC_UNAUTHORIZED) {
-            // Initiate token refresh
-            refreshAccessToken(context, listener);
-        } else {
-            // Handle other types of errors
-            Log.e(TAG, "Request failed: " + error.toString());
-        }
-    }
-
-    interface TokenRefreshListener {
-        void onTokenRefreshed(String refreshedToken);
-        void onTokenRefreshFailed();
-    }
 }

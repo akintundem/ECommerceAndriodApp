@@ -3,6 +3,7 @@ package com.example.e_commerce_app.presentation;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoDevice;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserSession;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.AuthenticationContinuation;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.AuthenticationDetails;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.ChallengeContinuation;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.MultiFactorAuthenticationContinuation;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.AuthenticationHandler;
@@ -29,7 +30,8 @@ public class SignInActivity extends AppCompatActivity {
     private EditText editTextUsername, editTextPassword;
     private Button buttonSignIn;
     private TextView textViewSignUp;
-
+    String username;
+    String password;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,8 +61,12 @@ public class SignInActivity extends AppCompatActivity {
     }
 
     private void signIn() {
-        String username = editTextUsername.getText().toString().trim();
-        String password = editTextPassword.getText().toString().trim();
+        username = editTextUsername.getText().toString().trim();
+        password = editTextPassword.getText().toString().trim();
+
+//        UserTokenManager.getInstance().setTokens(userSession);
+        Intent intent = new Intent(SignInActivity.this, DashboardActivity.class);
+        startActivity(intent);
 
         SignInImplementation.signIn(username,password,handler);
 
@@ -80,8 +86,14 @@ public class SignInActivity extends AppCompatActivity {
 
         @Override
         public void getAuthenticationDetails(AuthenticationContinuation authenticationContinuation, String userId) {
-            // Not used in this scenario
+            // Provide authentication details for sign-in
+            AuthenticationDetails authenticationDetails = new AuthenticationDetails(userId, password, null);
+
+            // Continue with the authentication process
+            authenticationContinuation.setAuthenticationDetails(authenticationDetails);
+            authenticationContinuation.continueTask();
         }
+
 
         @Override
         public void getMFACode(MultiFactorAuthenticationContinuation continuation) {
