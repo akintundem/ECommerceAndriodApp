@@ -16,6 +16,7 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+
     buildTypes {
         release {
             minifyEnabled false
@@ -35,4 +36,12 @@ dependencies {
     testImplementation libs.junit
     androidTestImplementation libs.ext.junit
     androidTestImplementation libs.espresso.core
+    implementation 'com.google.code.gson:gson:2.8.8'
+    implementation 'com.amazonaws:aws-android-sdk-cognitoidentityprovider:2.16.0'
+    implementation 'com.amazonaws:aws-android-sdk-core:2.16.0'
+    implementation 'org.java-websocket:Java-WebSocket:1.5.2'
+
+
+
+
 }
