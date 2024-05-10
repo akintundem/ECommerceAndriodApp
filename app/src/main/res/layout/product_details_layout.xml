@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/default_product_image" />
+        android:src="@drawable/default_album_art" />
 
     <!-- Product Name -->
     <TextView
@@ -62,5 +62,6 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/aboutProduct"
         android:layout_marginTop="16dp" />
+
 
 </RelativeLayout>
