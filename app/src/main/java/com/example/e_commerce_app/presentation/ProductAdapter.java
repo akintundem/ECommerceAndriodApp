@@ -65,7 +65,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
             // Load product image using Glide or any other image loading library
             Glide.with(itemView.getContext())
                     .load(product.getString("ProductPicture"))
-                    .placeholder(R.drawable.product_placeholder)
+                    .placeholder(R.drawable.default_album_art)
+                    .centerInside()
                     .into(productImage);
         }
     }
