@@ -1,8 +1,5 @@
 package com.example.e_commerce_app.implementation.cognito.authorization;
 
-import android.content.Intent;
-import android.widget.Toast;
-
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoDevice;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUser;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserSession;
@@ -10,8 +7,6 @@ import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.Auth
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.ChallengeContinuation;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.MultiFactorAuthenticationContinuation;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.AuthenticationHandler;
-import com.example.e_commerce_app.presentation.DashboardActivity;
-import com.example.e_commerce_app.presentation.SignInActivity;
 
 
 import org.json.JSONException;

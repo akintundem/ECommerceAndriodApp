@@ -2,7 +2,6 @@ package com.example.e_commerce_app.presentation;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.se.omapi.Session;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -32,7 +31,7 @@ public class VerificationCodeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String verificationCode = editTextVerificationCode.getText().toString().trim();
-                VerificationImplementation.verifyCode(UserSessionManager.getInstance().getEmail(), verificationCode, verifyHandler);
+                VerificationImplementation.verifyCode("Hi", verificationCode, verifyHandler);
             }
         });
     }
@@ -41,7 +40,7 @@ public class VerificationCodeActivity extends AppCompatActivity {
         @Override
         public void onSuccess() {
             // Handle successful confirmation
-            Intent intent = new Intent(VerificationCodeActivity.this, DashboardActivity.class);
+            Intent intent = new Intent(VerificationCodeActivity.this, HomeActivity.class);
             startActivity(intent);
             finish(); // Finish the current activity to prevent returning to it with back button
         }
