@@ -6,10 +6,7 @@ import com.amazonaws.services.cognitoidentityprovider.model.SignUpResult;
 import com.example.e_commerce_app.R;
 import com.example.e_commerce_app.implementation.UserSessionManager;
 import com.example.e_commerce_app.implementation.cognito.authentication.SignupImplementation;
-<<<<<<< HEAD
-=======
 import com.example.e_commerce_app.implementation.serverComms.ServerCommunication;
->>>>>>> 3-product-listing
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
@@ -43,11 +40,7 @@ public class SignupActivity extends AppCompatActivity {
         buttonSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-<<<<<<< HEAD
-//                signUp();
-=======
                 signUp();
->>>>>>> 3-product-listing
             }
         });
 
@@ -59,18 +52,6 @@ public class SignupActivity extends AppCompatActivity {
         });
     }
 
-<<<<<<< HEAD
-//    private void signUp() {
-//        String firstName = editTextFirstName.getText().toString().trim();
-//        String lastName = editTextLastName.getText().toString().trim();
-//        String email = editTextEmail.getText().toString().trim();
-//        String password = editTextPassword.getText().toString().trim();
-//        String phone = editTextPhone.getText().toString().trim();
-//        UserSessionManager.getInstance().setUserDetails(email,firstName,lastName,phone);
-//        SignupImplementation.signUp(firstName,lastName,email,password,phone,signUpHandler);
-//
-//    }
-=======
     private void signUp() {
         String firstName = editTextFirstName.getText().toString().trim();
         String lastName = editTextLastName.getText().toString().trim();
@@ -81,7 +62,6 @@ public class SignupActivity extends AppCompatActivity {
         SignupImplementation.signUp(firstName,lastName,email,password,phone,signUpHandler);
 
     }
->>>>>>> 3-product-listing
 
 
 

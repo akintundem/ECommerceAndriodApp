@@ -65,11 +65,7 @@ public class SignInActivity extends AppCompatActivity {
         password = editTextPassword.getText().toString().trim();
 
 //        UserTokenManager.getInstance().setTokens(userSession);
-<<<<<<< HEAD
-        Intent intent = new Intent(SignInActivity.this, HomeActivity.class);
-=======
         Intent intent = new Intent(SignInActivity.this, DashboardActivity.class);
->>>>>>> 3-product-listing
         startActivity(intent);
 
         SignInImplementation.signIn(username,password,handler);
@@ -84,11 +80,7 @@ public class SignInActivity extends AppCompatActivity {
         public void onSuccess(CognitoUserSession userSession, CognitoDevice newDevice) {
             // Set all initial tokens.
             UserTokenManager.getInstance().setTokens(userSession);
-<<<<<<< HEAD
-            Intent intent = new Intent(SignInActivity.this, HomeActivity.class);
-=======
             Intent intent = new Intent(SignInActivity.this, DashboardActivity.class);
->>>>>>> 3-product-listing
             startActivity(intent);
         }
 

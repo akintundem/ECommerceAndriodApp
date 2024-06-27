@@ -1,13 +1,5 @@
 package com.example.e_commerce_app.implementation;
 
-<<<<<<< HEAD
-import com.google.gson.JsonObject;
-
-public class UserSessionManager {
-    private static UserSessionManager instance;
-
-    private JsonObject recommendedProducts;
-=======
 public class UserSessionManager {
     private static UserSessionManager instance;
 
@@ -16,7 +8,6 @@ public class UserSessionManager {
     private String firstName;
     private String lastName;
     private String phone;
->>>>>>> 3-product-listing
 
     // Private constructor to prevent instantiation outside the class
     private UserSessionManager() {}
@@ -29,16 +20,6 @@ public class UserSessionManager {
         return instance;
     }
 
-<<<<<<< HEAD
-    public JsonObject getRecommendedProducts() {
-        return recommendedProducts;
-    }
-
-    public void setRecommendedProducts(JsonObject recommendedProducts) {
-        this.recommendedProducts = recommendedProducts;
-    }
-}
-=======
     // Method to set user data
     public void setUserDetails(String email, String firstName, String lastName, String phone) {
         this.email = email;
@@ -83,4 +64,3 @@ public class UserSessionManager {
         return phone;
     }
 }
->>>>>>> 3-product-listing

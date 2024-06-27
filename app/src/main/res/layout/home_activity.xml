@@ -6,17 +6,9 @@
 
     <!-- RecyclerView to display the list of items -->
     <androidx.recyclerview.widget.RecyclerView
-<<<<<<< HEAD
-        android:id="@+id/recycler_view"
-=======
         android:id="@+id/recyclerView"
->>>>>>> 3-product-listing
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="vertical" />
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 3-product-listing
 </LinearLayout>
