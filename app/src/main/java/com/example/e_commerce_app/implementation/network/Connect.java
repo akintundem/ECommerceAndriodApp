@@ -84,12 +84,19 @@
 
 package com.example.e_commerce_app.implementation.network;
 
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+
 import com.example.e_commerce_app.implementation.UserSessionManager;
+import com.example.e_commerce_app.presentation.CheckoutActivity;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 
 import java.io.IOException;
 
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -97,6 +104,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import com.google.gson.Gson;
+import com.stripe.android.paymentsheet.PaymentSheet;
 
 public class Connect {
     private ApiService apiService;
@@ -119,6 +127,10 @@ public class Connect {
             instance = new Connect();
         }
         return instance;
+    }
+
+    public ApiService getApiService() {
+        return apiService;
     }
 
     public void getPokemonData(OnDataReceivedListener listener) {
@@ -155,5 +167,43 @@ public class Connect {
             }
         });
     }
+
+
+//
+//            public void onResponse(@NonNull Call<PaymentSheetResponse> call, @NonNull Response<PaymentSheetResponse> response) {
+//                if (response.isSuccessful() && response.body() != null) {
+//                    PaymentSheetResponse responseBody = response.body();
+//                    paymentIntentClientSecret = responseBody.getPaymentIntent();
+//                    customerConfig = new PaymentSheet.CustomerConfiguration(
+//                            responseBody.getCustomer(),
+//                            responseBody.getEphemeralKey()
+//                    );
+//                    PaymentConfiguration.init(getApplicationContext(), responseBody.getPublishableKey());
+//                }
+//            }
+//
+
+
+
+
+
+
+
+
+//    private void onPaymentSheetResult(@NonNull PaymentSheetResult paymentSheetResult) {
+//        switch (paymentSheetResult) {
+//            case Completed:
+//                Toast.makeText(this, "Payment complete!", Toast.LENGTH_SHORT).show();
+//                break;
+//            case Canceled:
+//                Toast.makeText(this, "Payment canceled!", Toast.LENGTH_SHORT).show();
+//                break;
+//            case Failed:
+//                Toast.makeText(this, "Payment failed!", Toast.LENGTH_SHORT).show();
+//                break;
+//        }
+//    }
+
+
 
 }
